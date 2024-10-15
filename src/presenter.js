@@ -14,6 +14,10 @@ form.addEventListener("submit", (event) => {
   const montoValue = Number.parseInt(monto.value);
   const descripcionValue = descripcion.value;
 
+  //const gastos = new Gastos();
+  //gastos.registrargasto(fecha, monto, descripcion);
+  //const gastoregistrado = gastos.obtenerGastos(();
+
   gastosdiv.innerHTML =
     "<div>" +
     fechaValue +
