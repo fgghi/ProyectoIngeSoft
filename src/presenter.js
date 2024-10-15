@@ -1,15 +1,27 @@
-import sumar from "./sumador";
+//import sumar from "./sumador";
 
-const first = document.querySelector("#primer-numero");
-const second = document.querySelector("#segundo-numero");
-const form = document.querySelector("#sumar-form");
-const div = document.querySelector("#resultado-div");
+const fecha = document.querySelector("#fecha");
+const monto = document.querySelector("#monto");
+const descripcion = document.querySelector("#descripcion");
+
+const form = document.querySelector("#gastos-form");
+const gastosdiv = document.querySelector("#gastos-div");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const firstNumber = Number.parseInt(first.value);
-  const secondNumber = Number.parseInt(second.value);
+  const fechaValue = fecha.value;
+  const montoValue = Number.parseInt(monto.value);
+  const descripcionValue = descripcion.value;
 
-  div.innerHTML = "<p>" + sumar(firstNumber, secondNumber) + "</p>";
+  gastosdiv.innerHTML =
+    "<div>" +
+    fechaValue +
+    "</div>" +
+    "<div>" +
+    montoValue +
+    "</div>" +
+    "<div>" +
+    descripcionValue +
+    "</div>";
 });
