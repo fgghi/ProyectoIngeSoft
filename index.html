@@ -1,32 +1,47 @@
 <!DOCTYPE html>
-<html xml:lang="es">
-  <head>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gastos</title>
-  </head>
-  <body>
-    <h1>Registro de gasto</h1>
-    <form id="gastos-form">
-      <label for="fecha">fecha:</label>
-      <input type="date" id="fecha" />
-      <label for="monto">Monto:</label>
-      <input type="number" id="monto" />
-      <label for="descripcion">Descripcion:</label>
-      <input type="text" id="descripcion" />
-
-      <input
-        type="submit"
-        value="Registrar gastos"
-        id="registrar-gasto-button"
-      />
+    <style>
+        #mensaje-exito {
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registro de Gasto</h1>
+    <form id="gastos-form" action="#" method="POST">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required />
+        
+        <label for="monto">Monto:</label>
+        <input type="number" id="monto" name="monto" required min="0" step="0.01" />
+        
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" required />
+        
+        <input type="submit" value="Registrar gastos" id="registrar-gasto-button" />
     </form>
-    <div id="gastos-div"></div>
 
-    <!-- Aquí usamos un enlace directamente -->
-   <a href="reporte.html"><button id="mostrar-reporte-button" type="button">
-  Mostrar reporte de balance
-</button></a>
+    <div id="mensaje-exito" style="display: none;"></div>
 
 
-    <script type="module" src="./src/presenter.js"></script>
-  </body>
+    <a href="reporte.html">
+        <button id="mostrar-reporte-button" type="button">Mostrar reporte de balance</button>
+    </a>
+
+    <script type="module">
+        document.getElementById('gastos-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const mensajeDiv = document.getElementById('mensaje-exito');
+            mensajeDiv.textContent = 'Registro exitoso!';
+            mensajeDiv.style.display = 'block';
+
+        });
+    </script>
+</body>
 </html>

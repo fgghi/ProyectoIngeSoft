@@ -18,14 +18,5 @@ form.addEventListener("submit", (event) => {
   //gastos.registrargasto(fecha, monto, descripcion);
   //const gastoregistrado = gastos.obtenerGastos(();
 
-  gastosdiv.innerHTML =
-    "<div>" +
-    fechaValue +
-    "</div>" +
-    "<div>" +
-    montoValue +
-    "</div>" +
-    "<div>" +
-    descripcionValue +
-    "</div>";
+  
 });
