@@ -76,4 +76,20 @@ describe("Transacciones", () => {
     let ingresosRegistrados = transacciones.obtenerIngresos();
     expect(ingresosRegistrados).toContain(registroIngreso);
   });
+
+  it("Historial de gastos", () => {
+    const transacciones = new Transacciones();
+    const registroGasto = {
+      fecha: "2024-08-12",
+      monto: 20,
+      descripcion: "cafe",
+      tipo: "gasto",          
+      categoria: "comida" 
+    };
+
+    transacciones.registrarTransaccion(registroGasto);
+
+    let gastosRegistrados = transacciones.obtenerGastos();
+    expect(gastosRegistrados).toContain(registroGasto);
+  });
 });
