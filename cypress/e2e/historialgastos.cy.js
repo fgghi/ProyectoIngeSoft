@@ -14,7 +14,11 @@ describe("Historial de gastos", () => {
   
       cy.get("#gastos-div")
         .should("contain", "2024-10-25")
-        .and("contain", "10");
+        .and("contain", "10")
+        .and("contain", "Café")
+        .and("contain", "comida");
     });
+
+
   });
   
