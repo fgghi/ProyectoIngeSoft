@@ -35,4 +35,19 @@ describe("Ingresos", () => {
     ingresos.registrarIngreso(ingreso2);
     expect(ingresos.obtenerTotalIngresos()).toBe(800);
   });
+
+  it("filtra ingresos por un rango de fechas", () => {
+    const ingresos = new Ingresos();
+
+    const ingreso1 = { fecha: "2024-10-10", monto: 200, descripcion: "Venta A" };
+    const ingreso2 = { fecha: "2024-10-15", monto: 300, descripcion: "Venta B" };
+    const ingreso3 = { fecha: "2024-10-20", monto: 400, descripcion: "Venta C" };
+
+    ingresos.registrarIngreso(ingreso1);
+    ingresos.registrarIngreso(ingreso2);
+    ingresos.registrarIngreso(ingreso3);
+
+    const resultado = ingresos.filtrarPorRangoFechas("2024-10-12", "2024-10-18");
+    expect(resultado).toEqual([ingreso2]);
+  });
 });
