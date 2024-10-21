@@ -50,4 +50,17 @@ describe("Ingresos", () => {
     const resultado = ingresos.filtrarPorRangoFechas("2024-10-12", "2024-10-18");
     expect(resultado).toEqual([ingreso2]);
   });
+
+  it("no encuentra ingresos cuando no hay en el rango de fechas especificado", () => {
+    const ingresos = new Ingresos();
+
+    const ingreso1 = { fecha: "2024-10-05", monto: 150, descripcion: "Venta D" };
+    const ingreso2 = { fecha: "2024-10-25", monto: 350, descripcion: "Venta E" };
+
+    ingresos.registrarIngreso(ingreso1);
+    ingresos.registrarIngreso(ingreso2);
+
+    const resultado = ingresos.filtrarPorRangoFechas("2024-10-10", "2024-10-20");
+    expect(resultado).toEqual([]);
+  });
 });
