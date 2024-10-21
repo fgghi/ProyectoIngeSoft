@@ -25,4 +25,14 @@ describe("Ingresos", () => {
     ingresos.registrarIngreso(ingresoValido);
     expect(ingresos.obtenerIngresos()).toContainEqual(ingresoValido);
   });
+
+  it("calcula correctamente el total de ingresos", () => {
+    const ingresos = new Ingresos();
+    const ingreso1 = { fecha: "2024-10-24", monto: 500, descripcion: "Salario" };
+    const ingreso2 = { fecha: "2024-10-25", monto: 300, descripcion: "Venta" };
+
+    ingresos.registrarIngreso(ingreso1);
+    ingresos.registrarIngreso(ingreso2);
+    expect(ingresos.obtenerTotalIngresos()).toBe(800);
+  });
 });

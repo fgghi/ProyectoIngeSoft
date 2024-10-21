@@ -4,7 +4,6 @@ class Ingresos {
   }
 
   registrarIngreso(ingreso) {
-    // Verificar que el monto sea mayor a 0
     if (ingreso.monto <= 0) {
       throw new Error("El monto del ingreso debe ser mayor a 0");
     }
@@ -13,6 +12,10 @@ class Ingresos {
 
   obtenerIngresos() {
     return this.ingresos;
+  }
+
+  obtenerTotalIngresos() {
+    return this.ingresos.reduce((total, ingreso) => total + ingreso.monto, 0);
   }
 }
 
