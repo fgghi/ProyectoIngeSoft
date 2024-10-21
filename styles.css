@@ -1,0 +1,191 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Contenedor de login */
+#login-container {
+    width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#login-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#login-form input[type="text"],
+#login-form input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#login-form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#login-form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+#mensaje-exito {
+    color: green;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Contenedor de transacciones */
+#transacciones-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center; /* Centrar elementos dentro del formulario */
+    max-width: 500px; /* Ancho máximo del formulario */
+    margin: 0 auto; /* Centrar el formulario en la página */
+    padding: 20px; /* Espacio interno para el formulario */
+    background-color: #fff; /* Fondo blanco para destacarlo */
+    border: 1px solid #ccc; /* Borde suave */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para efecto */
+}
+
+#transacciones-form input,
+#transacciones-form select {
+    width: 100%; /* Ancho completo dentro del contenedor */
+}
+
+#transacciones-form input[type="submit"] {
+    width: 100%; /* Ancho completo para el botón */
+}
+/* Contenedor de presupuestos */
+#presupuesto-form {
+    display: flex;
+    flex-direction: column; /* Disposición en columna */
+    gap: 10px; /* Espacio entre elementos */
+    align-items: center; /* Centrar los elementos */
+    max-width: 500px; /* Ancho máximo del formulario */
+    margin: 0 auto; /* Centrar el formulario en la página */
+    padding: 20px; /* Espacio interno para el formulario */
+    background-color: #fff; /* Fondo blanco para destacarlo */
+    border: 1px solid #ccc; /* Borde suave */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para efecto */
+}
+
+#presupuesto-form input,
+#presupuesto-form select {
+    width: 100%; /* Ancho completo para los campos */
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#presupuesto-form input[type="submit"] {
+    width: 100%; /* Ancho completo para el botón */
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#presupuesto-form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+/* Botones de filtros y reporte */
+#filter-ingresos,
+#filter-gastos,
+#filter-todos,
+#mostrar-reporte-button,
+#definir-presupuesto-button {
+    margin: 10px 5px;
+    padding: 8px 15px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#filter-ingresos:hover,
+#filter-gastos:hover,
+#filter-todos:hover,
+#mostrar-reporte-button:hover,
+#definir-presupuesto-button:hover {
+    background-color: #0b7dda;
+}
+
+#filtros-form {
+    display: none; /* Oculto por defecto */
+    margin-top: 20px;
+}
+
+/* Contenedor de gastos e ingresos */
+#gastos-div, #ingresos-div {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+
+#gastos-div div, #ingresos-div div {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+#gastos-div div:last-child, #ingresos-div div:last-child {
+    border-bottom: none;
+}
+
+/* Estilos del reporte */
+#reporte-container {
+    display: none; /* Oculto por defecto */
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#reporte-container h3 {
+    text-align: center;
+}
+
+#reporte-gastos-div div {
+    margin-bottom: 10px;
+}
+
+/* Enlace de presupuesto */
+#definir-presupuesto-button {
+    display: block;
+    margin: 20px auto;
+}
