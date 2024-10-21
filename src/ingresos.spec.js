@@ -13,4 +13,16 @@ describe("Ingresos", () => {
       "El monto del ingreso debe ser mayor a 0"
     );
   });
+
+  it("permite registrar un ingreso válido", () => {
+    const ingresos = new Ingresos();
+    const ingresoValido = {
+      fecha: "2024-10-24",
+      monto: 500,
+      descripcion: "Salario mensual",
+    };
+
+    ingresos.registrarIngreso(ingresoValido);
+    expect(ingresos.obtenerIngresos()).toContainEqual(ingresoValido);
+  });
 });
