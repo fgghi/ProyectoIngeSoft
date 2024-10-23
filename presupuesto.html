@@ -6,6 +6,19 @@
     <title>Definir Presupuesto</title>
 </head>
 <body>
-   
+    <h1>Definir Presupuesto para Proyectos</h1>
+    <form id="presupuesto-form">
+        <label for="nombre-proyecto">Nombre del Proyecto:</label>
+        <input type="text" id="nombre-proyecto" required />
+
+        <label for="monto-total">Monto Total:</label>
+        <input type="number" id="monto-total" required min="0" />
+
+        <input type="submit" value="Registrar Presupuesto" />
+    </form>
+
+    <div id="mensaje"></div>
+    
+    <script type="module" src="./src/presenter.js"></script>
 </body>
 </html>
