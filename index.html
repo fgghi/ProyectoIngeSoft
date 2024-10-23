@@ -31,12 +31,14 @@
     <a href="reporte.html">
         <button id="mostrar-reporte-button" type="button">Mostrar reporte de balance</button>
     </a>
+    <a href="presupuesto.html">
+      <button id="definir-presupuesto-button" type="button">Definir presupuesto</button>
+  </a>
 
     <script type="module">
         document.getElementById('gastos-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evitar el envío del formulario
+            event.preventDefault(); 
 
-            // Guardar datos en localStorage
             const fecha = document.getElementById('fecha').value;
             const monto = document.getElementById('monto').value;
             const descripcion = document.getElementById('descripcion').value;
@@ -44,7 +46,6 @@
             const gasto = { fecha, monto, descripcion };
             localStorage.setItem('gasto', JSON.stringify(gasto));
 
-            // Mostrar mensaje de éxito
             const mensajeDiv = document.getElementById('mensaje-exito');
             mensajeDiv.textContent = 'Registro exitoso!';
             mensajeDiv.style.display = 'block';
