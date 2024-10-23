@@ -1,5 +1,3 @@
-// presenter.js
-
 import Presupuesto from './gastos.js'; // Importar clase Presupuesto
 import Gastos from './gastos.js'; // Asegúrate de que Gastos esté importado adecuadamente
 
@@ -31,6 +29,7 @@ formularioPresupuesto.addEventListener('submit', (event) => {
 const fecha = document.querySelector("#fecha");
 const monto = document.querySelector("#monto");
 const descripcion = document.querySelector("#descripcion");
+const categoria = document.querySelector("#categoria"); // Obtener el elemento de categoría
 
 const formGastos = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
@@ -41,13 +40,19 @@ formGastos.addEventListener("submit", (event) => {
     const fechaValue = fecha.value;
     const montoValue = Number.parseFloat(monto.value);
     const descripcionValue = descripcion.value;
+    const categoriaValue = categoria.value; // Obtener la categoría seleccionada
 
-    const gastos = new Gastos(); // Asegúrate de que Gastos sea una clase válida
-    gastos.registrarGasto({ fecha: fechaValue, monto: montoValue, descripcion: descripcionValue });
+    const gastos = new Gastos();
+    gastos.registrarGasto({ 
+        fecha: fechaValue, 
+        monto: montoValue, 
+        descripcion: descripcionValue,
+        categoria: categoriaValue // Incluir categoría en el objeto de gasto
+    });
 
     // Mostrar mensaje de éxito o actualización de la lista de gastos
     const mensajeGastosDiv = document.createElement("div");
-    mensajeGastosDiv.textContent = `Gasto registrado: ${descripcionValue} por $${montoValue} en la fecha ${fechaValue}.`;
+    mensajeGastosDiv.textContent = `Gasto registrado: ${descripcionValue} por $${montoValue} en la fecha ${fechaValue}. Categoría: ${categoriaValue}.`;
     gastosDiv.appendChild(mensajeGastosDiv);
     
     // Limpiar el formulario de gastos
