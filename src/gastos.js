@@ -12,6 +12,9 @@ class Gastos {
     if (gasto.descripcion.toLowerCase() === "pasajes" && gasto.monto >= 30) { // Cambia > a >=
       throw new Error("No se puede registrar un gasto mayor a 30 Bs en la categoría 'pasajes'");
     }
+    if (gasto.descripcion.toLowerCase() === "alimentos" && gasto.monto > 100) {
+      throw new Error("No se puede registrar un gasto mayor a 100 Bs en la categoría 'alimentos'");
+    }
 
     // Agregar el gasto a la lista
     this.gastos.push(gasto);
