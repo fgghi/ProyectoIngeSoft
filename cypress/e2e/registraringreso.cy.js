@@ -15,7 +15,7 @@ describe('Filtrar por Ingresos y Gastos', () => {
         cy.get('#descripcion').type('Salario');
         cy.get('#tipo').select('ingreso');
         cy.get('#categoria').select('salud');
-        cy.get('#registrar-gasto-button').click();
+        cy.get('#registrar-transaccion-button').click();
 
         // Completar el formulario con un gasto
         cy.get('#fecha').type('2024-10-23');
@@ -23,7 +23,7 @@ describe('Filtrar por Ingresos y Gastos', () => {
         cy.get('#descripcion').type('Cena');
         cy.get('#tipo').select('gasto');
         cy.get('#categoria').select('comida');
-        cy.get('#registrar-gasto-button').click();
+        cy.get('#registrar-transaccion-button').click();
 
         // Verificar que se pueden mostrar solo ingresos
         cy.get('#filter-ingresos').click();

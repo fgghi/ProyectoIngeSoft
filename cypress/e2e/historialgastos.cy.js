@@ -6,7 +6,7 @@ describe("Historial de gastos", () => {
       cy.get("#descripcion").type("Café");
       cy.get("#tipo").select("gasto");
       cy.get("#categoria").select("comida");
-      cy.get("#registrar-gasto-button").click();
+      cy.get("#registrar-transaccion-button").click();
     });
   
     it("muestra todos los gastos en el historial con fecha y monto", () => {
