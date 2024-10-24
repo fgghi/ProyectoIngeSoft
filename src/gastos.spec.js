@@ -27,23 +27,37 @@ describe("Gastos", () => {
     expect(gastos.obtenerGastos()).toContainEqual(registroGasto);
   });
 
-/*
-  it("registrar un gasto en pasajes", () => {
-    //Given -- arrange
+  it("no permite registrar un gasto mayor o igual a 30 Bs en 'pasajes'", () => {
     const gastos = new Gastos();
     const registroGasto = {
-      fecha: "2024-08-12",
-      monto: 20,
+      fecha: "2024-10-12",
+      monto: 30, // Cambiar a 30 para probar la validación
       descripcion: "pasajes",
     };
 
-    //When -act
-    gastos.registrarGasto(registroGasto);
-
-    //Then --assert
-    let gastoRegistrado = gastos.obtenerGastos();
-    expect(gastoRegistrado).toEqual(registroGasto);
+    expect(() => gastos.registrarGasto(registroGasto)).toThrow(
+      "No se puede registrar un gasto mayor a 30 Bs en la categoría 'pasajes'"
+    );
   });
+
+  it("permite registrar un gasto menor a 30 Bs en 'pasajes'", () => {
+    const gastos = new Gastos();
+    const registroGasto = {
+      fecha: "2024-10-12",
+      monto: 29,
+      descripcion: "pasajes",
+    };
+
+    gastos.registrarGasto(registroGasto);
+    expect(gastos.obtenerGastos()).toContainEqual(registroGasto);
+  });
+
+  // Otras pruebas según lo necesites
+
+
+
+/*
+  
 
   it("registrar un gasto en Alimentos", () => {
     //Given -- arrange
