@@ -1,15 +1,10 @@
 class Transacciones {
   constructor() {
-    this.transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+    this.transacciones = [];
   }
 
   registrarTransaccion(transaccion) {
     this.transacciones.push(transaccion);
-    this.actualizarLocalStorage(); // Asegúrate de actualizar localStorage
-  }
-
-  actualizarLocalStorage() {
-    localStorage.setItem('transacciones', JSON.stringify(this.transacciones));
   }
 
   obtenerTransacciones() {
@@ -24,3 +19,5 @@ class Transacciones {
     return this.transacciones.filter(transaccion => transaccion.tipo === 'gasto');
   }
 }
+
+export default Transacciones;
