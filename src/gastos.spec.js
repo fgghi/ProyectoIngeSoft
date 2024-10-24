@@ -65,46 +65,26 @@ describe("Gastos", () => {
     );
   });
   
+  it("no permite registrar un gasto mayor a 100 Bs en 'personales'", () => {
+    const gastos = new Gastos();
+    const registroGasto = {
+      fecha: "2024-08-12",
+      monto: 120, // Un monto que supera el límite
+      descripcion: "personales",
+    };
+  
+    expect(() => gastos.registrarGasto(registroGasto)).toThrow(
+      "No se puede registrar un gasto mayor a 100 Bs en la categoría 'personales'"
+    );
+  });
+  
 
 
 
 /*
   
-
   
-  it("registrar un gasto en transporte", () => {
-    //Given -- arrange
-    const gastos = new Gastos();
-    const registroGasto = {
-      fecha: "2024-08-12",
-      monto: 20,
-      descripcion: "transporte",
-    };
-
-    //When -act
-    gastos.registrarGasto(registroGasto);
-
-    //Then --assert
-    let gastoRegistrado = gastos.obtenerGastos();
-    expect(gastoRegistrado).toEqual(registroGasto);
-  });
   
-  it("registrar un gasto personales", () => {
-    //Given -- arrange
-    const gastos = new Gastos();
-    const registroGasto = {
-      fecha: "2024-08-12",
-      monto: 40,
-      descripcion: "personales",
-    };
-
-    //When -act
-    gastos.registrarGasto(registroGasto);
-
-    //Then --assert
-    let gastoRegistrado = gastos.obtenerGastos();
-    expect(gastoRegistrado).toEqual(registroGasto);
-  });
   
   it("registrar un gasto en Otros", () => {
     //Given -- arrange
