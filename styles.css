@@ -1,191 +1,131 @@
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-/* Contenedor de login */
-#login-container {
-    width: 300px;
-    margin: 100px auto;
+/* Contenedor principal de transacciones */
+#transacciones-container {
+    max-width: 800px;
+    margin: 20px auto;
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#login-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#login-form label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-#login-form input[type="text"],
-#login-form input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
-
-#login-form input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-#login-form input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-#mensaje-exito {
-    color: green;
-    margin-top: 10px;
-    text-align: center;
-}
-
-/* Contenedor de transacciones */
+/* Estilos del formulario */
 #transacciones-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    align-items: center; /* Centrar elementos dentro del formulario */
-    max-width: 500px; /* Ancho máximo del formulario */
-    margin: 0 auto; /* Centrar el formulario en la página */
-    padding: 20px; /* Espacio interno para el formulario */
-    background-color: #fff; /* Fondo blanco para destacarlo */
-    border: 1px solid #ccc; /* Borde suave */
-    border-radius: 5px; /* Bordes redondeados */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para efecto */
+    gap: 15px;
+    margin-bottom: 30px;
 }
 
-#transacciones-form input,
-#transacciones-form select {
-    width: 100%; /* Ancho completo dentro del contenedor */
-}
-
-#transacciones-form input[type="submit"] {
-    width: 100%; /* Ancho completo para el botón */
-}
-/* Contenedor de presupuestos */
-#presupuesto-form {
+.form-group {
     display: flex;
-    flex-direction: column; /* Disposición en columna */
-    gap: 10px; /* Espacio entre elementos */
-    align-items: center; /* Centrar los elementos */
-    max-width: 500px; /* Ancho máximo del formulario */
-    margin: 0 auto; /* Centrar el formulario en la página */
-    padding: 20px; /* Espacio interno para el formulario */
-    background-color: #fff; /* Fondo blanco para destacarlo */
-    border: 1px solid #ccc; /* Borde suave */
-    border-radius: 5px; /* Bordes redondeados */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para efecto */
+    flex-direction: column;
+    gap: 5px;
 }
 
-#presupuesto-form input,
-#presupuesto-form select {
-    width: 100%; /* Ancho completo para los campos */
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+.form-group label {
+    font-weight: 600;
+    color: #333;
 }
 
-#presupuesto-form input[type="submit"] {
-    width: 100%; /* Ancho completo para el botón */
-    padding: 10px;
+.form-group input,
+.form-group select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+/* Botones */
+.btn-submit {
     background-color: #4CAF50;
     color: white;
+    padding: 10px 20px;
     border: none;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
-#presupuesto-form input[type="submit"]:hover {
+.btn-submit:hover {
     background-color: #45a049;
 }
 
-
-/* Botones de filtros y reporte */
-#filter-ingresos,
-#filter-gastos,
-#filter-todos,
-#mostrar-reporte-button,
-#definir-presupuesto-button {
-    margin: 10px 5px;
-    padding: 8px 15px;
+.btn-filter {
     background-color: #2196F3;
     color: white;
+    padding: 8px 16px;
     border: none;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s;
 }
 
-#filter-ingresos:hover,
-#filter-gastos:hover,
-#filter-todos:hover,
-#mostrar-reporte-button:hover,
-#definir-presupuesto-button:hover {
-    background-color: #0b7dda;
+.btn-filter:hover {
+    background-color: #1976D2;
 }
 
-#filtros-form {
-    display: none; /* Oculto por defecto */
-    margin-top: 20px;
-}
-
-/* Contenedor de gastos e ingresos */
-#gastos-div, #ingresos-div {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fafafa;
-}
-
-#gastos-div div, #ingresos-div div {
-    margin-bottom: 10px;
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-}
-
-#gastos-div div:last-child, #ingresos-div div:last-child {
-    border-bottom: none;
-}
-
-/* Estilos del reporte */
-#reporte-container {
-    display: none; /* Oculto por defecto */
-    margin-top: 20px;
+/* Historial de transacciones */
+#historial-container {
+    margin-top: 30px;
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
+    border-radius: 4px;
 }
 
-#reporte-container h3 {
+#gastos-div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#gastos-div div {
+    padding: 10px;
+    background-color: white;
+    border-radius: 4px;
+    border-left: 4px solid #4CAF50;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor de filtros */
+#filtros-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+/* Títulos */
+h2, h3 {
+    color: #333;
+    margin-bottom: 20px;
     text-align: center;
 }
 
-#reporte-gastos-div div {
-    margin-bottom: 10px;
-}
+/* Estilos responsivos */
+@media (max-width: 600px) {
+    #transacciones-container {
+        margin: 10px;
+        padding: 15px;
+    }
 
-/* Enlace de presupuesto */
-#definir-presupuesto-button {
-    display: block;
-    margin: 20px auto;
+    #filtros-form {
+        flex-direction: column;
+    }
+
+    .btn-filter {
+        width: 100%;
+        margin: 5px 0;
+    }
 }
