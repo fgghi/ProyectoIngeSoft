@@ -24,4 +24,5 @@ describe("Registro de gasto", () => {
       .and("contain", "55")
       .and("contain", "Fotocopias varias");
   });
+  
 });

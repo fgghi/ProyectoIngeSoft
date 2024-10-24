@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Gastos</title>
+</head>
+<body>
+    <h1>Reporte de Gastos</h1>
+    
+    <div id="reporte"></div>
+    
+    <a href="index.html" id="atras-link">Atrás</a>
+
+    <script type="module">
+        // Recuperar datos de localStorage
+        const gastoJSON = localStorage.getItem('gasto');
+
+        if (gastoJSON) {
+            const gasto = JSON.parse(gastoJSON);
+            const reporteDiv = document.getElementById('reporte');
+
+            reporteDiv.innerHTML = `
+                <p><strong>Fecha:</strong> ${gasto.fecha}</p>
+                <p><strong>Monto:</strong> ${gasto.monto}</p>
+                <p><strong>Descripción:</strong> ${gasto.descripcion}</p>
+            `;
+        } else {
+            document.getElementById('reporte').innerHTML = '<p>No hay gastos registrados.</p>';
+        }
+    </script>
+</body>
+</html>
