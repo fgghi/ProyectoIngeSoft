@@ -17,7 +17,7 @@ describe("Registro de gasto", () => {
     cy.get("#monto").type(55);
     cy.get("#descripcion").type("Fotocopias varias");
     //When  --act
-    cy.get("#registrar-gasto-button").click();
+    cy.get("#registrar-transaccion-button").click();
     //Then -assert
     cy.get("#gastos-div")
       .should("contain", "2024-10-14")
