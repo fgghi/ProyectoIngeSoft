@@ -1,35 +1,54 @@
 <!DOCTYPE html>
-<html xml:lang="es">
-  <head>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gastos e Ingresos</title>
-  </head>
-  <body>
-    <h1>Registro de transacción</h1>
-    <form id="gastos-form">
-      <label for="fecha">Fecha:</label>
-      <input type="date" id="fecha" required />
+    <style>
+        #mensaje-exito {
+            color: green;
+            margin-top: 10px;
+        }
+        #gastos-div {
+            margin-top: 20px;
+        }
+        #reporte-container {
+            display: none; /* Ocultar el contenedor del reporte por defecto */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
 
-      <label for="monto">Monto:</label>
-      <input type="number" id="monto" required />
+    <div id="mensaje-exito" style="display: none;"></div>
 
-      <label for="descripcion">Descripción:</label>
-      <input type="text" id="descripcion" required />
+    <h2>Registro de Transacción</h2>
+    <form id="transacciones-form">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required />
 
-      <label for="tipo">Tipo:</label>
-      <select id="tipo" required>
-        <option value="gasto">Gasto</option>
-        <option value="ingreso">Ingreso</option>
-      </select>
+        <label for="monto">Monto:</label>
+        <input type="number" id="monto" name="monto" required min="0" step="0.01" />
 
-      <label for="categoria">Categoría:</label>
-      <select id="categoria" required>
-        <option value="comida">Comida</option>
-        <option value="transporte">Transporte</option>
-        <option value="entretenimiento">Entretenimiento</option>
-        <option value="salud">Salud</option>
-      </select>
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" required />
+        
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" required>
+            <option value="gasto">Gasto</option>
+            <option value="ingreso">Ingreso</option>
+        </select>
 
-      <input type="submit" value="Registrar transacción" id="registrar-transaccion-button" />
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" required>
+            <option value="comida">Comida</option>
+            <option value="transporte">Transporte</option>
+            <option value="entretenimiento">Entretenimiento</option>
+            <option value="salud">Salud</option>
+        </select>
+
+        <input type="submit" value="Registrar transacción" id="registrar-transaccion-button" />
+>>>>>>> main
     </form>
 
     
@@ -39,6 +58,101 @@
 
     <div id="gastos-div"></div>
 
-    <script type="module" src="./src/presenter.js"></script>
-  </body>
+    <button id="mostrar-reporte-button" type="button">Mostrar reporte de gastos</button>
+    <div id="reporte-container">
+        <h3>Reporte de Gastos e Ingresos</h3>
+        <button id="ocultar-reporte-button">Ocultar reporte</button>
+        <div id="reporte-gastos-div"></div>
+    </div>
+    <a href="presupuesto.html">
+        <button id="definir-presupuesto-button" type="button">Definir presupuesto</button>
+    </a>
+
+    <script type="module">
+        // Código para manejar el registro de transacciones
+        document.getElementById('transacciones-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const fecha = document.getElementById('fecha').value;
+            const monto = document.getElementById('monto').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const tipo = document.getElementById('tipo').value;
+            const categoria = document.getElementById('categoria').value;
+
+            const transaccion = { fecha, monto, descripcion, tipo, categoria };
+            let transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+            transacciones.push(transaccion);
+            localStorage.setItem('transacciones', JSON.stringify(transacciones));
+
+            mostrarTransacciones(transacciones);
+            this.reset();
+
+            const mensajeDiv = document.getElementById('mensaje-exito');
+            mensajeDiv.textContent = 'Registro exitoso!';
+            mensajeDiv.style.display = 'block';
+        });
+
+        function mostrarTransacciones(listaTransacciones) {
+            const gastosDiv = document.getElementById('gastos-div');
+            gastosDiv.innerHTML = ''; // Limpiar contenido anterior
+
+            listaTransacciones.forEach(transaccion => {
+                const transaccionElemento = document.createElement('div');
+                transaccionElemento.textContent = `${transaccion.fecha} - ${transaccion.tipo.toUpperCase()}: $${transaccion.monto} (${transaccion.categoria}) - ${transaccion.descripcion}`;
+                gastosDiv.appendChild(transaccionElemento);
+            });
+        }
+
+        // Lógica para los filtros
+        document.getElementById('filter-ingresos').addEventListener('click', function () {
+            const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+            const ingresos = transacciones.filter(t => t.tipo === 'ingreso');
+            mostrarTransacciones(ingresos);
+        });
+
+        document.getElementById('filter-gastos').addEventListener('click', function () {
+            const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+            const gastos = transacciones.filter(t => t.tipo === 'gasto');
+            mostrarTransacciones(gastos);
+        });
+
+        document.getElementById('filter-todos').addEventListener('click', function () {
+            const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+            mostrarTransacciones(transacciones);
+        });
+
+        // Manejador para el botón "Mostrar reporte de gastos"
+        document.getElementById('mostrar-reporte-button').addEventListener('click', function () {
+            const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+            mostrarReporte(transacciones);
+        });
+
+        function mostrarReporte(transacciones) {
+            const reporteContainer = document.getElementById('reporte-container');
+            const reporteGastosDiv = document.getElementById('reporte-gastos-div');
+            reporteGastosDiv.innerHTML = ''; // Limpiar contenido anterior
+
+            // Agrupar gastos e ingresos
+            transacciones.forEach(transaccion => {
+                const transaccionElemento = document.createElement('div');
+                transaccionElemento.innerHTML = `
+                    Fecha: ${transaccion.fecha}<br>
+                    Monto: $${transaccion.monto}<br>
+                    Descripción: ${transaccion.descripcion}<br>
+                    Tipo: ${transaccion.tipo.toUpperCase()}<br>
+                    <hr>
+                `;
+                reporteGastosDiv.appendChild(transaccionElemento);
+            });
+
+            reporteContainer.style.display = 'block'; // Mostrar el contenedor del reporte
+        }
+
+        // Manejador para ocultar el reporte
+        document.getElementById('ocultar-reporte-button').addEventListener('click', function () {
+            const reporteContainer = document.getElementById('reporte-container');
+            reporteContainer.style.display = 'none'; // Ocultar el contenedor del reporte
+        });
+    </script>
+</body>
 </html>
