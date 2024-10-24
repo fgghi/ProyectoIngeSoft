@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +10,19 @@
             color: green;
             margin-top: 10px;
         }
+
         #gastos-div {
             margin-top: 20px;
         }
+
         #reporte-container {
-            display: none; /* Ocultar el contenedor del reporte por defecto */
+            display: none;
+            /* Ocultar el contenedor del reporte por defecto */
             margin-top: 20px;
         }
     </style>
 </head>
+
 <body>
 
     <div id="mensaje-exito" style="display: none;"></div>
@@ -32,7 +37,7 @@
 
         <label for="descripcion">Descripción:</label>
         <input type="text" id="descripcion" name="descripcion" required />
-        
+
         <label for="tipo">Tipo:</label>
         <select id="tipo" required>
             <option value="gasto">Gasto</option>
@@ -50,7 +55,7 @@
         <input type="submit" value="Registrar transacción" id="registrar-transaccion-button" />
     </form>
 
-    
+
     <button id="filter-ingresos">Mostrar solo ingresos</button>
     <button id="filter-gastos">Mostrar historial de gastos</button>
     <button id="filter-todos">Mostrar historial de gastos e ingresos</button>
@@ -69,7 +74,7 @@
 
     <script type="module">
         // Código para manejar el registro de transacciones
-        document.getElementById('transacciones-form').addEventListener('submit', function(event) {
+        document.getElementById('transacciones-form').addEventListener('submit', function (event) {
             event.preventDefault();
 
             const fecha = document.getElementById('fecha').value;
@@ -154,4 +159,5 @@
         });
     </script>
 </body>
+
 </html>
