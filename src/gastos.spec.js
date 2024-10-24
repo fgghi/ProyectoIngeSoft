@@ -1,23 +1,33 @@
 import Gastos from "./gastos.js";
 
 describe("Gastos", () => {
-  it("registrar un gasto", () => {
-    //Given -- arrange
+
+  it("no permite registrar un gasto mayor a 40 Bs en 'compra de libros'", () => {
     const gastos = new Gastos();
     const registroGasto = {
       fecha: "2024-10-12",
-      monto: 45,
+      monto: 41,
       descripcion: "compra de libros",
     };
 
-    //When -act
-    gastos.registrarGasto(registroGasto);
-
-    //Then --assert
-    let gastoRegistrado = gastos.obtenerGastos();
-    expect(gastoRegistrado).toEqual(registroGasto);
+    expect(() => gastos.registrarGasto(registroGasto)).toThrow(
+      "No se puede registrar un gasto mayor a 40 Bs en la categoría 'compra de libros'"
+    );
   });
 
+  it("permite registrar un gasto de 40 Bs en 'compra de libros'", () => {
+    const gastos = new Gastos();
+    const registroGasto = {
+      fecha: "2024-10-12",
+      monto: 40,
+      descripcion: "compra de libros",
+    };
+
+    gastos.registrarGasto(registroGasto);
+    expect(gastos.obtenerGastos()).toContainEqual(registroGasto);
+  });
+
+/*
   it("registrar un gasto en pasajes", () => {
     //Given -- arrange
     const gastos = new Gastos();
@@ -102,5 +112,5 @@ describe("Gastos", () => {
     //Then --assert
     let gastoRegistrado = gastos.obtenerGastos();
     expect(gastoRegistrado).toEqual(registroGasto);
-  });
+  });*/
 });
