@@ -51,4 +51,22 @@ describe("Gastos", () => {
     let gastoRegistrado = gastos.obtenerGastos();
     expect(gastoRegistrado).toEqual(registroGasto);
   });
+
+  
+  it("registrar un gasto en transporte", () => {
+    //Given -- arrange
+    const gastos = new Gastos();
+    const registroGasto = {
+      fecha: "2024-08-12",
+      monto: 20,
+      descripcion: "transporte",
+    };
+
+    //When -act
+    gastos.registrarGasto(registroGasto);
+
+    //Then --assert
+    let gastoRegistrado = gastos.obtenerGastos();
+    expect(gastoRegistrado).toEqual(registroGasto);
+  });
 });
