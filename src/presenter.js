@@ -1,4 +1,5 @@
-import Presupuesto from './gastos.js'; // Importar clase Presupuesto
+import Transacciones from './transacciones.js';
+import Presupuesto from './gastos.js'; // Asegúrate de que la clase Presupuesto esté implementada correctamente
 import Gastos from './gastos.js'; // Asegúrate de que Gastos esté importado adecuadamente
 
 // Manejo del presupuesto
@@ -25,36 +26,56 @@ formularioPresupuesto.addEventListener('submit', (event) => {
     formularioPresupuesto.reset();
 });
 
-// Manejo de gastos
-const fecha = document.querySelector("#fecha");
-const monto = document.querySelector("#monto");
-const descripcion = document.querySelector("#descripcion");
-const categoria = document.querySelector("#categoria"); // Obtener el elemento de categoría
+// Manejo de transacciones (gastos e ingresos)
+const transacciones = new Transacciones();
+const formGastos = document.getElementById('gastos-form');
+const gastosDiv = document.getElementById('gastos-div');
 
-const formGastos = document.querySelector("#gastos-form");
-const gastosDiv = document.querySelector("#gastos-div");
+formGastos.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-formGastos.addEventListener("submit", (event) => {
-    event.preventDefault();
+    const fecha = document.getElementById('fecha').value;
+    const monto = parseFloat(document.getElementById('monto').value);
+    const descripcion = document.getElementById('descripcion').value;
+    const tipo = document.getElementById('tipo').value;
+    const categoria = document.getElementById('categoria').value;
 
-    const fechaValue = fecha.value;
-    const montoValue = Number.parseFloat(monto.value);
-    const descripcionValue = descripcion.value;
-    const categoriaValue = categoria.value; // Obtener la categoría seleccionada
+    const transaccion = {
+        fecha: fecha,
+        monto: monto,
+        descripcion: descripcion,
+        tipo: tipo,
+        categoria: categoria,
+    };
 
-    const gastos = new Gastos();
-    gastos.registrarGasto({ 
-        fecha: fechaValue, 
-        monto: montoValue, 
-        descripcion: descripcionValue,
-        categoria: categoriaValue // Incluir categoría en el objeto de gasto
+    try {
+        transacciones.registrarTransaccion(transaccion);
+        mostrarTransacciones(transacciones.obtenerGastos()); // Mostrar solo gastos después de registrar
+        this.reset(); // Limpiar el formulario
+    } catch (error) {
+        alert(error.message); // Mostrar error en caso de que la transacción no sea válida
+    }
+});
+
+function mostrarTransacciones(listaTransacciones) {
+    gastosDiv.innerHTML = '';
+
+    listaTransacciones.forEach(transaccion => {
+        const transaccionElemento = document.createElement('div');
+        transaccionElemento.textContent = `${transaccion.fecha} - ${transaccion.tipo.toUpperCase()}: $${transaccion.monto} (${transaccion.categoria}) - ${transaccion.descripcion}`;
+        gastosDiv.appendChild(transaccionElemento);
     });
+}
 
-    // Mostrar mensaje de éxito o actualización de la lista de gastos
-    const mensajeGastosDiv = document.createElement("div");
-    mensajeGastosDiv.textContent = `Gasto registrado: ${descripcionValue} por $${montoValue} en la fecha ${fechaValue}. Categoría: ${categoriaValue}.`;
-    gastosDiv.appendChild(mensajeGastosDiv);
-    
-    // Limpiar el formulario de gastos
-    formGastos.reset();
+// Filtros para mostrar ingresos, gastos y todas las transacciones
+document.getElementById('filter-ingresos').addEventListener('click', function () {
+    mostrarTransacciones(transacciones.obtenerIngresos());
+});
+
+document.getElementById('filter-gastos').addEventListener('click', function () {
+    mostrarTransacciones(transacciones.obtenerGastos());
+});
+
+document.getElementById('filter-todos').addEventListener('click', function () {
+    mostrarTransacciones(transacciones.obtenerGastos().concat(transacciones.obtenerIngresos())); // Combina gastos e ingresos
 });
