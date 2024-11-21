@@ -15,7 +15,6 @@ function generarReporte() {
         return acc;
     }, {});
 
-    // Insertar datos en la tabla
     Object.values(agrupado).forEach(({ categoria, tipo, total }) => {
         const fila = `<tr>
             <td>${categoria}</td>

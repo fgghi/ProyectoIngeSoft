@@ -1,4 +1,4 @@
-// Obtener transacciones desde el almacenamiento
+
 function obtenerTransacciones() {
     return JSON.parse(localStorage.getItem('transacciones')) || [];
 }
