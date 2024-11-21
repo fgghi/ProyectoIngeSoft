@@ -1,20 +1,29 @@
-function generarReporteBalance() {
-    const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+// Obtener transacciones desde el almacenamiento
+function obtenerTransacciones() {
+    return JSON.parse(localStorage.getItem('transacciones')) || [];
+}
 
-    let totalIngresos = 0;
-    let totalGastos = 0;
+// Calcular totales: ingresos, gastos y patrimonio neto
+function calcularTotales(transacciones) {
+    return transacciones.reduce(
+        (totales, transaccion) => {
+            const monto = parseFloat(transaccion.monto);
+            if (transaccion.tipo === 'ingreso') {
+                totales.ingresos += monto;
+            } else if (transaccion.tipo === 'gasto') {
+                totales.gastos += monto;
+            }
+            return totales;
+        },
+        { ingresos: 0, gastos: 0 }
+    );
+}
 
-    transacciones.forEach(transaccion => {
-        if (transaccion.tipo === 'ingreso') {
-            totalIngresos += parseFloat(transaccion.monto);
-        } else if (transaccion.tipo === 'gasto') {
-            totalGastos += parseFloat(transaccion.monto);
-        }
-    });
+// Mostrar reporte en la interfaz
+function mostrarReporteEnPantalla(totales) {
+    const { ingresos, gastos } = totales;
+    const patrimonioNeto = ingresos - gastos;
 
-    const patrimonioNeto = totalIngresos - totalGastos;
-
-    // Mostrar el reporte en la interfaz
     const balanceDiv = document.getElementById('balance-reporte');
     balanceDiv.innerHTML = `
         <table>
@@ -27,11 +36,11 @@ function generarReporteBalance() {
             <tbody>
                 <tr>
                     <td>Activos (Ingresos)</td>
-                    <td>${totalIngresos.toFixed(2)} Bs</td>
+                    <td>${ingresos.toFixed(2)} Bs</td>
                 </tr>
                 <tr>
                     <td>Pasivos (Gastos)</td>
-                    <td>${totalGastos.toFixed(2)} Bs</td>
+                    <td>${gastos.toFixed(2)} Bs</td>
                 </tr>
                 <tr class="total">
                     <td>Patrimonio Neto</td>
@@ -42,34 +51,35 @@ function generarReporteBalance() {
     `;
 }
 
-// Función para exportar el reporte como PDF
-async function exportarReportePDF() {
+// Generar reporte en PDF
+function exportarReportePDF(totales) {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
 
-    const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
-    let totalIngresos = 0;
-    let totalGastos = 0;
+    const { ingresos, gastos } = totales;
+    const patrimonioNeto = ingresos - gastos;
 
-    transacciones.forEach(transaccion => {
-        if (transaccion.tipo === 'ingreso') {
-            totalIngresos += parseFloat(transaccion.monto);
-        } else if (transaccion.tipo === 'gasto') {
-            totalGastos += parseFloat(transaccion.monto);
-        }
-    });
-
-    const patrimonioNeto = totalIngresos - totalGastos;
-
-    // Crear el reporte en PDF con Ingresos, Gastos y Patrimonio Neto
     pdf.text("Reporte de Balance", 10, 10);
-    pdf.text(`Ingresos: ${totalIngresos.toFixed(2)} Bs`, 10, 20);
-    pdf.text(`Gastos: ${totalGastos.toFixed(2)} Bs`, 10, 30);
-    pdf.text(`Patrimonio Neto: ${patrimonioNeto.toFixed(2)} Bs`, 10, 40);  // Aquí agregamos el Patrimonio Neto
+    pdf.text(`Ingresos: ${ingresos.toFixed(2)} Bs`, 10, 20);
+    pdf.text(`Gastos: ${gastos.toFixed(2)} Bs`, 10, 30);
+    pdf.text(`Patrimonio Neto: ${patrimonioNeto.toFixed(2)} Bs`, 10, 40);
 
     pdf.save("Reporte_Balance.pdf");
 }
 
+// Función principal para generar el reporte de balance
+function generarReporteBalance() {
+    const transacciones = obtenerTransacciones();
+    const totales = calcularTotales(transacciones);
+    mostrarReporteEnPantalla(totales);
+
+    // Agregar evento para exportar PDF (si no está ya agregado)
+    const botonExportarPDF = document.getElementById('exportar-pdf');
+    if (!botonExportarPDF.hasAttribute('data-listener')) {
+        botonExportarPDF.addEventListener('click', () => exportarReportePDF(totales));
+        botonExportarPDF.setAttribute('data-listener', 'true');
+    }
+}
+
 // Generar el reporte al cargar la página
 document.addEventListener('DOMContentLoaded', generarReporteBalance);
-document.getElementById('exportar-pdf').addEventListener('click', exportarReportePDF);
