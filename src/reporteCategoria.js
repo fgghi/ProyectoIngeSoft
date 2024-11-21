@@ -1,3 +1,4 @@
+
 const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
 
 function generarReporte() {
@@ -67,5 +68,30 @@ function mostrarReporteFiltrado(filtradas) {
     });
 }
 
-// Generar el reporte inicial
+function exportarPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    pdf.text("Reporte de Finanzas", 10, 10);
+
+    const rows = [];
+    const tabla = document.getElementById('reporte-tabla').querySelectorAll('tbody tr');
+    tabla.forEach(fila => {
+        const cols = fila.querySelectorAll('td');
+        rows.push([cols[0].innerText, cols[1].innerText, cols[2].innerText]);
+    });
+
+    pdf.autoTable({
+        head: [['Categoría', 'Tipo', 'Total']],
+        body: rows
+    });
+
+    pdf.save('Reporte_Finanzas.pdf');
+}
+
+function exportarExcel() {
+    const tabla = document.getElementById('reporte-tabla');
+    const wb = XLSX.utils.table_to_book(tabla, { sheet: "Reporte" });
+    XLSX.writeFile(wb, 'Reporte_Finanzas.xlsx');
+}
+
 document.addEventListener('DOMContentLoaded', generarReporte);

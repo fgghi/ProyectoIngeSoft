@@ -4,73 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte de Finanzas</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .filters {
-            margin-bottom: 20px;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Reporte de Finanzas</h1>
 
-    <!-- Filtros -->
-    <div class="filters">
+    <div>
         <label for="fechaInicio">Fecha Inicio:</label>
         <input type="date" id="fechaInicio">
+
         <label for="fechaFin">Fecha Fin:</label>
         <input type="date" id="fechaFin">
+
         <label for="tipo">Tipo:</label>
         <select id="tipo">
             <option value="">Todos</option>
-            <option value="ingreso">Ingresos</option>
-            <option value="gasto">Gastos</option>
+            <option value="Ingreso">Ingreso</option>
+            <option value="Gasto">Gasto</option>
         </select>
-        <label for="rangoMin">Monto Min:</label>
-        <input type="number" id="rangoMin" step="0.01">
-        <label for="rangoMax">Monto Max:</label>
-        <input type="number" id="rangoMax" step="0.01">
-        <button onclick="filtrarReporte()">Aplicar Filtros</button>
+
+        <label for="rangoMin">Monto Mínimo:</label>
+        <input type="number" id="rangoMin">
+
+        <label for="rangoMax">Monto Máximo:</label>
+        <input type="number" id="rangoMax">
+
+        <button onclick="filtrarReporte()">Filtrar</button>
+        <button onclick="generarReporte()">Reset</button>
     </div>
 
-    <!-- Tabla de reporte -->
-    <div id="reporte-div">
-        <table id="reporte-tabla">
-            <thead>
-                <tr>
-                    <th>Categoría</th>
-                    <th>Tipo</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Los datos se llenarán dinámicamente -->
-            </tbody>
-        </table>
-    </div>
+    <table id="reporte-tabla" border="1">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Tipo</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
-    <!-- Botones de exportación -->
-    <button onclick="exportarPDF()">Exportar a PDF</button>
-    <button onclick="exportarExcel()">Exportar a Excel</button>
+    <button onclick="exportarPDF()">Exportar PDF</button>
+    <button onclick="exportarExcel()">Exportar Excel</button>
 
-       
+    <script src="./src/reporteCategoria.js"></script>
+
 </body>
 </html>
