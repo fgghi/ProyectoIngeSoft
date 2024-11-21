@@ -14,6 +14,8 @@ describe("Reporte de balance", () => {
   
       cy.get("#balance-reporte").should("contain", "Ingresos");
       cy.get("#balance-reporte").should("contain", "250.00 Bs"); // 200 + 50
+      cy.get("#balance-reporte").should("contain", "150.00 Bs"); // 100 de gasto
+      cy.get("#balance-reporte").should("contain", "100.00 Bs"); // Patrimonio Neto: 250 - 150
     });
   
     it("muestra correctamente los gastos en el reporte de balance", () => {
@@ -31,6 +33,7 @@ describe("Reporte de balance", () => {
   
       cy.get("#balance-reporte").should("contain", "Gastos");
       cy.get("#balance-reporte").should("contain", "150.00 Bs"); // 50 + 100
+      cy.get("#balance-reporte").should("contain", "50.00 Bs"); // Patrimonio Neto: 200 - 150
     });
 
     it("muestra 0 Bs cuando no hay ingresos", () => {
@@ -44,6 +47,7 @@ describe("Reporte de balance", () => {
   
       cy.get("#balance-reporte").should("contain", "Ingresos");
       cy.get("#balance-reporte").should("contain", "0.00 Bs");
+      cy.get("#balance-reporte").should("contain", "0.00 Bs"); // Patrimonio Neto: 0 - 100
     });
   
     it("muestra 0 Bs cuando no hay gastos", () => {
@@ -57,6 +61,7 @@ describe("Reporte de balance", () => {
   
       cy.get("#balance-reporte").should("contain", "Gastos");
       cy.get("#balance-reporte").should("contain", "0.00 Bs");
+      cy.get("#balance-reporte").should("contain", "200.00 Bs"); // Patrimonio Neto: 200 - 0
     });
 
     it("muestra 0 Bs si no hay transacciones en el sistema", () => {
@@ -69,5 +74,6 @@ describe("Reporte de balance", () => {
       cy.get("#balance-reporte").should("contain", "0.00 Bs");
       cy.get("#balance-reporte").should("contain", "Gastos");
       cy.get("#balance-reporte").should("contain", "0.00 Bs");
+      cy.get("#balance-reporte").should("contain", "0.00 Bs"); // Patrimonio Neto: 0 - 0
     });
 });

@@ -12,6 +12,9 @@ function generarReporteBalance() {
         }
     });
 
+    const patrimonioNeto = totalIngresos - totalGastos;
+
+    // Mostrar el reporte en la interfaz
     const balanceDiv = document.getElementById('balance-reporte');
     balanceDiv.innerHTML = `
         <table>
@@ -23,17 +26,22 @@ function generarReporteBalance() {
             </thead>
             <tbody>
                 <tr>
-                    <td>Ingresos</td>
+                    <td>Activos (Ingresos)</td>
                     <td>${totalIngresos.toFixed(2)} Bs</td>
                 </tr>
                 <tr>
-                    <td>Gastos</td>
+                    <td>Pasivos (Gastos)</td>
                     <td>${totalGastos.toFixed(2)} Bs</td>
+                </tr>
+                <tr class="total">
+                    <td>Patrimonio Neto</td>
+                    <td>${patrimonioNeto.toFixed(2)} Bs</td>
                 </tr>
             </tbody>
         </table>
     `;
 }
+
 
 // Generar el reporte al cargar la página
 document.addEventListener('DOMContentLoaded', generarReporteBalance);
