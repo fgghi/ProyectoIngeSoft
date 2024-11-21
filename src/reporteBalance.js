@@ -1,4 +1,3 @@
-// Función para calcular y mostrar solo los ingresos
 function generarReporteBalance() {
     const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
 
