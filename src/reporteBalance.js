@@ -59,10 +59,13 @@ async function exportarReportePDF() {
         }
     });
 
-    // Crear el reporte en PDF con solo Ingresos y Gastos
+    const patrimonioNeto = totalIngresos - totalGastos;
+
+    // Crear el reporte en PDF con Ingresos, Gastos y Patrimonio Neto
     pdf.text("Reporte de Balance", 10, 10);
     pdf.text(`Ingresos: ${totalIngresos.toFixed(2)} Bs`, 10, 20);
     pdf.text(`Gastos: ${totalGastos.toFixed(2)} Bs`, 10, 30);
+    pdf.text(`Patrimonio Neto: ${patrimonioNeto.toFixed(2)} Bs`, 10, 40);  // Aquí agregamos el Patrimonio Neto
 
     pdf.save("Reporte_Balance.pdf");
 }
