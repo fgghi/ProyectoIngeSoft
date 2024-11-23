@@ -1,96 +1,201 @@
+let chart = null;
+let currentChartType = 'bar';
+let transacciones = [];
 
-const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+const CHART_COLORS = [
+    'rgb(255, 99, 132)',
+    'rgb(54, 162, 235)',
+    'rgb(255, 205, 86)',
+    'rgb(75, 192, 192)',
+    'rgb(153, 102, 255)',
+    'rgb(255, 159, 64)'
+];
 
-function generarReporte() {
-    const reporteTabla = document.getElementById('reporte-tabla').querySelector('tbody');
-    reporteTabla.innerHTML = ''; // Limpiar tabla
+document.addEventListener('DOMContentLoaded', () => {
+    cargarTransacciones();
+    inicializarEventListeners();
+    cargarCategorias();
+    generarReporte();
+});
 
-    // Agrupar transacciones por categoría y tipo
-    const agrupado = transacciones.reduce((acc, transaccion) => {
-        const key = `${transaccion.categoria}-${transaccion.tipo}`;
-        if (!acc[key]) {
-            acc[key] = { categoria: transaccion.categoria, tipo: transaccion.tipo, total: 0 };
-        }
-        acc[key].total += parseFloat(transaccion.monto);
-        return acc;
-    }, {});
+function inicializarEventListeners() {
+    document.getElementById('fechaInicio').addEventListener('change', generarReporte);
+    document.getElementById('fechaFin').addEventListener('change', generarReporte);
+    document.getElementById('tipo').addEventListener('change', generarReporte);
+    document.getElementById('categoria').addEventListener('change', generarReporte);
+}
 
-    Object.values(agrupado).forEach(({ categoria, tipo, total }) => {
-        const fila = `<tr>
-            <td>${categoria}</td>
-            <td>${tipo}</td>
-            <td>${total.toFixed(2)}</td>
-        </tr>`;
-        reporteTabla.innerHTML += fila;
+function cargarTransacciones() {
+    transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+}
+
+function cargarCategorias() {
+    const categorias = new Set(transacciones.map(t => t.categoria));
+    const selectCategoria = document.getElementById('categoria');
+    selectCategoria.innerHTML = '<option value="todas">Todas</option>';
+    
+    categorias.forEach(categoria => {
+        const option = document.createElement('option');
+        option.value = categoria;
+        option.textContent = categoria;
+        selectCategoria.appendChild(option);
     });
 }
 
-function filtrarReporte() {
+function filtrarTransacciones() {
     const fechaInicio = document.getElementById('fechaInicio').value;
     const fechaFin = document.getElementById('fechaFin').value;
     const tipo = document.getElementById('tipo').value;
-    const rangoMin = parseFloat(document.getElementById('rangoMin').value) || 0;
-    const rangoMax = parseFloat(document.getElementById('rangoMax').value) || Infinity;
+    const categoria = document.getElementById('categoria').value;
 
-    const transaccionesFiltradas = transacciones.filter(transaccion => {
-        const fecha = new Date(transaccion.fecha);
-        const cumpleFecha = (!fechaInicio || fecha >= new Date(fechaInicio)) &&
-                            (!fechaFin || fecha <= new Date(fechaFin));
-        const cumpleTipo = !tipo || transaccion.tipo === tipo;
-        const cumpleMonto = transaccion.monto >= rangoMin && transaccion.monto <= rangoMax;
-        return cumpleFecha && cumpleTipo && cumpleMonto;
+    return transacciones.filter(t => {
+        const cumpleFecha = (!fechaInicio || new Date(t.fecha) >= new Date(fechaInicio)) &&
+                           (!fechaFin || new Date(t.fecha) <= new Date(fechaFin));
+        const cumpleTipo = tipo === 'todos' || t.tipo === tipo;
+        const cumpleCategoria = categoria === 'todas' || t.categoria === categoria;
+        return cumpleFecha && cumpleTipo && cumpleCategoria;
     });
-
-    mostrarReporteFiltrado(transaccionesFiltradas);
 }
 
-function mostrarReporteFiltrado(filtradas) {
-    const reporteTabla = document.getElementById('reporte-tabla').querySelector('tbody');
-    reporteTabla.innerHTML = ''; // Limpiar tabla
-
-    const agrupado = filtradas.reduce((acc, transaccion) => {
-        const key = `${transaccion.categoria}-${transaccion.tipo}`;
-        if (!acc[key]) {
-            acc[key] = { categoria: transaccion.categoria, tipo: transaccion.tipo, total: 0 };
+function generarReporte() {
+    const transaccionesFiltradas = filtrarTransacciones();
+    
+    const datosPorCategoria = transaccionesFiltradas.reduce((acc, t) => {
+        if (!acc[t.categoria]) {
+            acc[t.categoria] = {
+                categoria: t.categoria,
+                ingresos: 0,
+                gastos: 0
+            };
         }
-        acc[key].total += parseFloat(transaccion.monto);
+        
+        const monto = parseFloat(t.monto);
+        if (t.tipo === 'Ingreso') {
+            acc[t.categoria].ingresos += monto;
+        } else {
+            acc[t.categoria].gastos += monto;
+        }
+        
         return acc;
     }, {});
 
-    Object.values(agrupado).forEach(({ categoria, tipo, total }) => {
-        const fila = `<tr>
-            <td>${categoria}</td>
-            <td>${tipo}</td>
-            <td>${total.toFixed(2)}</td>
-        </tr>`;
-        reporteTabla.innerHTML += fila;
+    actualizarTabla(datosPorCategoria);
+    actualizarGrafico(datosPorCategoria);
+}
+
+function actualizarTabla(datos) {
+    const tbody = document.getElementById('tablaReporte').querySelector('tbody');
+    tbody.innerHTML = '';
+    
+    const tipoSeleccionado = document.getElementById('tipo').value;
+    const totalIngresos = Object.values(datos).reduce((sum, d) => sum + d.ingresos, 0);
+    const totalGastos = Object.values(datos).reduce((sum, d) => sum + d.gastos, 0);
+    
+    Object.values(datos).forEach(d => {
+        if (tipoSeleccionado === 'todos' || 
+            (tipoSeleccionado === 'Ingreso' && d.ingresos > 0) || 
+            (tipoSeleccionado === 'Gasto' && d.gastos > 0)) {
+            
+            const montoIngreso = d.ingresos.toFixed(2);
+            const montoGasto = d.gastos.toFixed(2);
+            const porcentajeIngreso = ((d.ingresos / totalIngresos) * 100).toFixed(2);
+            const porcentajeGasto = ((d.gastos / totalGastos) * 100).toFixed(2);
+            
+            const fila = `
+                <tr>
+                    <td>${d.categoria}</td>
+                    <td class="text-success">${montoIngreso} (${porcentajeIngreso}%)</td>
+                    <td class="text-danger">${montoGasto} (${porcentajeGasto}%)</td>
+                </tr>
+            `;
+            tbody.innerHTML += fila;
+        }
     });
+
+    const filaTotales = `
+        <tr class="font-bold">
+            <td>TOTAL</td>
+            <td class="text-success">${totalIngresos.toFixed(2)}</td>
+            <td class="text-danger">${totalGastos.toFixed(2)}</td>
+        </tr>
+    `;
+    tbody.innerHTML += filaTotales;
+}
+
+function actualizarGrafico(datos) {
+    const ctx = document.getElementById('graficoCategoria').getContext('2d');
+    const tipoSeleccionado = document.getElementById('tipo').value;
+    
+    if (chart) {
+        chart.destroy();
+    }
+
+    const datosGrafico = Object.entries(datos).map(([categoria, valores]) => ({
+        categoria,
+        valor: tipoSeleccionado === 'Gasto' ? valores.gastos : valores.ingresos
+    }));
+
+    const config = {
+        type: currentChartType,
+        data: {
+            labels: datosGrafico.map(d => d.categoria),
+            datasets: [{
+                label: tipoSeleccionado === 'Gasto' ? 'Gastos por Categoría' : 'Ingresos por Categoría',
+                data: datosGrafico.map(d => d.valor),
+                backgroundColor: CHART_COLORS,
+                borderColor: CHART_COLORS,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: `Distribución de ${tipoSeleccionado === 'Gasto' ? 'Gastos' : 'Ingresos'} por Categorías`
+                }
+            }
+        }
+    };
+
+    chart = new Chart(ctx, config);
+}
+
+function cambiarTipoGrafico(tipo) {
+    currentChartType = tipo;
+    generarReporte();
 }
 
 function exportarPDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
-    pdf.text("Reporte de Finanzas", 10, 10);
+    
+    pdf.text("Reporte por Categorías", 20, 20);
 
-    const rows = [];
-    const tabla = document.getElementById('reporte-tabla').querySelectorAll('tbody tr');
-    tabla.forEach(fila => {
-        const cols = fila.querySelectorAll('td');
-        rows.push([cols[0].innerText, cols[1].innerText, cols[2].innerText]);
-    });
+    const tabla = document.getElementById('tablaReporte');
+    const headers = Array.from(tabla.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(tabla.querySelectorAll('tbody tr')).map(tr => 
+        Array.from(tr.querySelectorAll('td')).map(td => td.textContent)
+    );
 
     pdf.autoTable({
-        head: [['Categoría', 'Tipo', 'Total']],
-        body: rows
+        head: [headers],
+        body: rows,
+        startY: 30,
     });
 
-    pdf.save('Reporte_Finanzas.pdf');
+    const fecha = new Date().toLocaleDateString();
+    pdf.text(`Fecha del reporte: ${fecha}`, 20, pdf.previousAutoTable.finalY + 10);
+
+    pdf.save('reporte_categorias.pdf');
 }
 
 function exportarExcel() {
-    const tabla = document.getElementById('reporte-tabla');
-    const wb = XLSX.utils.table_to_book(tabla, { sheet: "Reporte" });
-    XLSX.writeFile(wb, 'Reporte_Finanzas.xlsx');
+    const tabla = document.getElementById('tablaReporte');
+    const wb = XLSX.utils.table_to_book(tabla, { sheet: "Reporte Categorías" });
+    XLSX.writeFile(wb, 'reporte_categorias.xlsx');
 }
-
-document.addEventListener('DOMContentLoaded', generarReporte);
