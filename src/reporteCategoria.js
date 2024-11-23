@@ -122,53 +122,8 @@ function actualizarTabla(datos) {
     tbody.innerHTML += filaTotales;
 }
 
-function actualizarGrafico(datos) {
-    const ctx = document.getElementById('graficoCategoria').getContext('2d');
-    const tipoSeleccionado = document.getElementById('tipo').value;
-    
-    if (chart) {
-        chart.destroy();
-    }
 
-    const datosGrafico = Object.entries(datos).map(([categoria, valores]) => ({
-        categoria,
-        valor: tipoSeleccionado === 'Gasto' ? valores.gastos : valores.ingresos
-    }));
 
-    const config = {
-        type: currentChartType,
-        data: {
-            labels: datosGrafico.map(d => d.categoria),
-            datasets: [{
-                label: tipoSeleccionado === 'Gasto' ? 'Gastos por Categoría' : 'Ingresos por Categoría',
-                data: datosGrafico.map(d => d.valor),
-                backgroundColor: CHART_COLORS,
-                borderColor: CHART_COLORS,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: `Distribución de ${tipoSeleccionado === 'Gasto' ? 'Gastos' : 'Ingresos'} por Categorías`
-                }
-            }
-        }
-    };
-
-    chart = new Chart(ctx, config);
-}
-
-function cambiarTipoGrafico(tipo) {
-    currentChartType = tipo;
-    generarReporte();
-}
 
 function exportarPDF() {
     const { jsPDF } = window.jspdf;
