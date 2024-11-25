@@ -30,3 +30,43 @@ describe('App de Gastos e Ingresos', () => {
       cy.get('#filter-ingresos-categoria').should('exist');
     });
   });
+
+  describe('Registro de Transacciones', () => {
+    beforeEach(() => {
+      cy.clearLocalStorage();
+      cy.visit('/');
+    });
+  
+    it('debería registrar una transacción de gasto correctamente', () => {
+      cy.get('#fecha').type('2024-01-15');
+      cy.get('#monto').type('100');
+      cy.get('#descripcion').type('Compra de comida');
+      cy.get('#tipo').select('gasto');
+      cy.get('#categoria').select('comida');
+      cy.get('#transacciones-form').submit();
+  
+      cy.get('#mensaje-exito')
+        .should('be.visible')
+        .and('contain', 'Registro exitoso!');
+  
+      cy.get('#gastos-div')
+        .should('contain', 'Compra de comida')
+        .and('contain', '100')
+        .and('contain', 'GASTO');
+    });
+  
+    it('debería registrar una transacción de ingreso correctamente', () => {
+      cy.get('#fecha').type('2024-01-15');
+      cy.get('#monto').type('1000');
+      cy.get('#descripcion').type('Salario');
+      cy.get('#tipo').select('ingreso');
+      cy.get('#categoria').select('salud');
+      cy.get('#transacciones-form').submit();
+  
+      cy.get('#mensaje-exito').should('be.visible');
+      cy.get('#gastos-div')
+        .should('contain', 'Salario')
+        .and('contain', '1000')
+        .and('contain', 'INGRESO');
+    });
+  });
