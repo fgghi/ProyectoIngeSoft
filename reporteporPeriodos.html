@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report por Periodos</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Reporte Financiero por Periodos</h1>
+    <div>
+        <label for="fecha-inicio">Fecha Inicio:</label>
+        <input type="date" id="fecha-inicio">
+        <label for="fecha-fin">Fecha Fin:</label>
+        <input type="date" id="fecha-fin">
+        <label for="tipo-periodo">Periodo:</label>
+        <select id="tipo-periodo">
+            <option value="mensual">Mensual</option>
+            <option value="trimestral">Trimestral</option>
+            <option value="anual">Anual</option>
+        </select>
+        <button id="generar-reporte">Generar Reporte</button>
+    </div>
+    <div>
+        <button onclick="exportarPDF()">Exportar a PDF</button>
+        <button onclick="exportarExcel()">Exportar a Excel</button>
+    </div>
+    <div id="resumen-periodo">
+        <!-- El resumen se generará dinámicamente -->
+    </div>
+    <table id="tabla-reporte" border="1">
+        <thead>
+            <tr>
+                <th>Periodo</th>
+                <th>Ingresos</th>
+                <th>Gastos</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody id="reporte-body">
+            <!-- Las filas se generarán dinámicamente -->
+        </tbody>
+    </table>
+    <canvas id="graficoReporte" width="400" height="200"></canvas>
+    <script src="./src/reporteporPeriodos.js"></script>
+</body>
+</html>
