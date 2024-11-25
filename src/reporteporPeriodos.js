@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     cargarTransacciones();
     inicializarEventListeners();
@@ -118,8 +117,8 @@ function actualizarTabla(datosPeriodo) {
 function actualizarResumen(datosPeriodo) {
     const totales = Object.values(datosPeriodo).reduce(
         (acumulado, datos) => {
-            acumulado.ingresos += datos.ingresos;
-            acumulado.gastos += datos.gastos;
+            acumulado.ingresos += Number(datos.ingresos) || 0;
+            acumulado.gastos += Number(datos.gastos) || 0;
             return acumulado;
         },
         { ingresos: 0, gastos: 0 }
@@ -128,8 +127,8 @@ function actualizarResumen(datosPeriodo) {
     const balanceTotal = totales.ingresos - totales.gastos;
     document.getElementById('resumen-periodo').innerHTML = `
         <h3>Resumen del Periodo</h3>
-        <p>Total Ingresos: <span class="ingresos">$${totales.ingresos.toFixed(2)}</span></p>
-        <p>Total Gastos: <span class="gastos">$${totales.gastos.toFixed(2)}</span></p>
-        <p>Balance Total: <span class="${balanceTotal >= 0 ? 'ingresos' : 'gastos'}">$${balanceTotal.toFixed(2)}</span></p>
+        <p>Total Ingresos: <span class="ingresos">$${(totales.ingresos || 0).toFixed(2)}</span></p>
+        <p>Total Gastos: <span class="gastos">$${(totales.gastos || 0).toFixed(2)}</span></p>
+        <p>Balance Total: <span class="${balanceTotal >= 0 ? 'ingresos' : 'gastos'}">$${(balanceTotal || 0).toFixed(2)}</span></p>
     `;
 }
