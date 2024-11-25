@@ -1,72 +1,50 @@
-describe('App de Gastos e Ingresos', () => {
+describe('Filtros de Transacciones', () => {
     beforeEach(() => {
-      // Limpiar localStorage antes de cada prueba
-      cy.clearLocalStorage();
+      // Configurar datos de prueba
+      const transaccionesPrueba = [
+        {
+          fecha: '2024-01-15',
+          monto: 100,
+          descripcion: 'Comida',
+          tipo: 'gasto',
+          categoria: 'comida'
+        },
+        {
+          fecha: '2024-01-15',
+          monto: 1000,
+          descripcion: 'Salario',
+          tipo: 'ingreso',
+          categoria: 'salud'
+        }
+      ];
+      
+      cy.window().then(win => {
+        win.localStorage.setItem('transacciones', JSON.stringify(transaccionesPrueba));
+      });
+      
       cy.visit('/');
     });
   
-    it('debería cargar todos los elementos del formulario', () => {
-      cy.get('#transacciones-form').should('exist');
-      cy.get('#fecha').should('exist');
-      cy.get('#monto').should('exist');
-      cy.get('#descripcion').should('exist');
-      cy.get('#tipo').should('exist');
-      cy.get('#categoria').should('exist');
-      cy.get('#registrar-transaccion-button').should('exist');
-    });
-  
-    it('debería tener los botones de navegación', () => {
-      cy.get('#definir-presupuesto-button').should('exist');
-      cy.get('#reporte-balance-button').should('exist');
-      cy.get('#reporte-categoria').should('exist');
-      cy.get('#reporte-periodos').should('exist');
-    });
-  
-    it('debería tener los botones de filtro', () => {
-      cy.get('#filter-ingresos').should('exist');
-      cy.get('#filter-gastos').should('exist');
-      cy.get('#filter-todos').should('exist');
-      cy.get('#filter-gastos-categoria').should('exist');
-      cy.get('#filter-ingresos-categoria').should('exist');
-    });
-  });
-
-  describe('Registro de Transacciones', () => {
-    beforeEach(() => {
-      cy.clearLocalStorage();
-      cy.visit('/');
-    });
-  
-    it('debería registrar una transacción de gasto correctamente', () => {
-      cy.get('#fecha').type('2024-01-15');
-      cy.get('#monto').type('100');
-      cy.get('#descripcion').type('Compra de comida');
-      cy.get('#tipo').select('gasto');
-      cy.get('#categoria').select('comida');
-      cy.get('#transacciones-form').submit();
-  
-      cy.get('#mensaje-exito')
-        .should('be.visible')
-        .and('contain', 'Registro exitoso!');
-  
-      cy.get('#gastos-div')
-        .should('contain', 'Compra de comida')
-        .and('contain', '100')
-        .and('contain', 'GASTO');
-    });
-  
-    it('debería registrar una transacción de ingreso correctamente', () => {
-      cy.get('#fecha').type('2024-01-15');
-      cy.get('#monto').type('1000');
-      cy.get('#descripcion').type('Salario');
-      cy.get('#tipo').select('ingreso');
-      cy.get('#categoria').select('salud');
-      cy.get('#transacciones-form').submit();
-  
-      cy.get('#mensaje-exito').should('be.visible');
+    it('debería filtrar solo ingresos', () => {
+      cy.get('#filter-ingresos').click();
       cy.get('#gastos-div')
         .should('contain', 'Salario')
-        .and('contain', '1000')
-        .and('contain', 'INGRESO');
+        .and('contain', 'INGRESO')
+        .and('not.contain', 'Comida');
+    });
+  
+    it('debería filtrar solo gastos', () => {
+      cy.get('#filter-gastos').click();
+      cy.get('#gastos-div')
+        .should('contain', 'Comida')
+        .and('contain', 'GASTO')
+        .and('not.contain', 'Salario');
+    });
+  
+    it('debería mostrar todos los movimientos', () => {
+      cy.get('#filter-todos').click();
+      cy.get('#gastos-div')
+        .should('contain', 'Comida')
+        .and('contain', 'Salario');
     });
   });
