@@ -60,6 +60,7 @@
     <button id="filter-gastos">Mostrar historial de gastos</button>
     <button id="filter-todos">Mostrar historial de gastos e ingresos</button>
     <button id="filter-gastos-categoria">Mostrar el total de gastos por categoria</button>
+    <button id="filter-ingresos-categoria">Mostrar el total de ingresos por categoria</button>
     <div id="gastos-div"></div>
 
     <button id="mostrar-reporte-button" type="button">Mostrar reporte de gastos</button>
@@ -166,14 +167,11 @@
             reporteContainer.style.display = 'none'; // Ocultar el contenedor del reporte
         });
 
-        // Manejador para el botón "Mostrar el total de gastos por categoría"
         document.getElementById('filter-gastos-categoria').addEventListener('click', function () {
             const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
 
-            // Filtrar solo los gastos
             const gastos = transacciones.filter(t => t.tipo === 'gasto');
 
-            // Agrupar y sumar los gastos por categoría
             const totalesPorCategoria = gastos.reduce((acc, transaccion) => {
                 if (!acc[transaccion.categoria]) {
                     acc[transaccion.categoria] = 0;
@@ -182,9 +180,14 @@
                 return acc;
             }, {});
 
-            // Mostrar el resultado en el div
             const gastosDiv = document.getElementById('gastos-div');
-            gastosDiv.innerHTML = ''; // Limpiar contenido anterior
+            gastosDiv.innerHTML = '';  // Limpiar contenido anterior
+
+            // Agregar el mensaje antes de los totales
+            const mensaje = document.createElement('div');
+            mensaje.textContent = 'Total de gastos por categoría:';
+            mensaje.style.fontWeight = 'bold'; // Poner en negrita
+            gastosDiv.appendChild(mensaje);
 
             for (const [categoria, total] of Object.entries(totalesPorCategoria)) {
                 const categoriaElemento = document.createElement('div');
@@ -192,6 +195,7 @@
                 gastosDiv.appendChild(categoriaElemento);
             }
         });
+
 
     </script>
 </body>
