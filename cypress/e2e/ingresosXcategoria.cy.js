@@ -4,7 +4,7 @@ describe("ingresos por categoria", () => {
       cy.get("#fecha").type("2024-10-25");
       cy.get("#monto").type(10);
       cy.get("#descripcion").type("para los desayunos");
-      cy.get("#tipo").select("gasto");
+      cy.get("#tipo").select("ingreso");
       cy.get("#categoria").select("comida");
       cy.get("#registrar-transaccion-button").click();
       
