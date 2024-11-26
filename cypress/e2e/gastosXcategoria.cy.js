@@ -8,7 +8,7 @@ describe("gastos por categoria", () => {
       cy.get("#categoria").select("comida");
       cy.get("#registrar-transaccion-button").click();
       
-      cy.get("#filter-gastos").click();
+      cy.get("#filter-gastos-categoria").click();
   
       cy.get("#gastos-div")
         .should("contain", "comida")
