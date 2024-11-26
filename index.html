@@ -196,7 +196,34 @@
             }
         });
 
+        document.getElementById('filter-ingresos-categoria').addEventListener('click', function () {
+            const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
 
+            const gastos = transacciones.filter(t => t.tipo === 'ingreso');
+
+            const totalesPorCategoria = gastos.reduce((acc, transaccion) => {
+                if (!acc[transaccion.categoria]) {
+                    acc[transaccion.categoria] = 0;
+                }
+                acc[transaccion.categoria] += parseFloat(transaccion.monto);
+                return acc;
+            }, {});
+
+            const gastosDiv = document.getElementById('gastos-div');
+            gastosDiv.innerHTML = '';  // Limpiar contenido anterior
+
+            // Agregar el mensaje antes de los totales
+            const mensaje = document.createElement('div');
+            mensaje.textContent = 'Total de ingresos por categoría:';
+            mensaje.style.fontWeight = 'bold'; // Poner en negrita
+            gastosDiv.appendChild(mensaje);
+
+            for (const [categoria, total] of Object.entries(totalesPorCategoria)) {
+                const categoriaElemento = document.createElement('div');
+                categoriaElemento.textContent = `Categoría: ${categoria} - Total: $${total.toFixed(2)}`;
+                gastosDiv.appendChild(categoriaElemento);
+            }
+        });
     </script>
 </body>
 
